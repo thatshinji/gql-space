@@ -1,5 +1,6 @@
 import express from "express";
 import { graphqlHTTP } from "express-graphql";
+import cors from "cors";
 import { schema, schema2 } from "./query/index.js";
 import { rootValue, rootValue2 } from "./response/index.js";
 
@@ -7,6 +8,7 @@ var app = express();
 
 const graphiql = true;
 
+app.use(cors());
 app.use(
   "/graphql",
   graphqlHTTP({
