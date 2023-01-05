@@ -4,6 +4,8 @@ import { request } from "graphql-request";
 import axios from "axios";
 
 const fetcher = (query: any) => request("/graphql2", query);
+const method = "POST";
+const url = `http://localhost:4000/graphql2`;
 
 function App() {
   // use swr request
@@ -23,11 +25,12 @@ function App() {
 
   // use axios
   const [articles, setArticles] = useState([]);
+
   const handleQuery = async (id: string) => {
     try {
       const { data: original } = await axios({
-        method: "POST",
-        url: "http://localhost:4000/graphql2",
+        method,
+        url,
         data: {
           query: `
             query Articles {
@@ -53,8 +56,8 @@ function App() {
   const handleDelete = async (id: string) => {
     try {
       const { data: original } = await axios({
-        method: "POST",
-        url: "http://localhost:4000/graphql2",
+        method,
+        url,
         data: {
           query: `
             mutation Articles($id: ID!) {
@@ -78,8 +81,8 @@ function App() {
   const handleAdd = async (article: any) => {
     try {
       const { data: original } = await axios({
-        method: "POST",
-        url: "http://localhost:4000/graphql2",
+        method,
+        url,
         data: {
           query: `
             mutation Articles($article: createArticleInput) {
