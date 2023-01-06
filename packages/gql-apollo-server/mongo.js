@@ -6,60 +6,30 @@ import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { koaMiddleware } from "@as-integrations/koa";
 
-const typeDefs = `#graphql
-  type Book {
-    title: String
-    author: String
-  }
+import { User } from "./modles/index.js";
 
+const typeDefs = `#graphql
   type User {
-    id: ID!
-    name: String
+    _id: ID!
+    name: String!
+    age: Int
   }
 
   type Query {
-    books: [Book]
-    numberSix: Int! # Should always return the number 6 when queried
-    numberSeven: Int! # Should always return 7
+    users: [User!]
     user(id: ID!): User
   }
 `;
 
-const users = [
-  {
-    id: "1",
-    name: "Elizabeth Bennet",
-  },
-  {
-    id: "2",
-    name: "Fitzwilliam Darcy",
-  },
-];
-
-const books = [
-  {
-    title: "The Awakening",
-    author: "Kate Chopin",
-  },
-  {
-    title: "City of Glass",
-    author: "Paul Auster",
-  },
-];
-// A map of functions which return data for the schema.
 const resolvers = {
   Query: {
-    books: () => books,
-    numberSix() {
-      return 6;
+    users: async () => {
+      const users = await User.find();
+      return users;
     },
-    numberSeven() {
-      return 7;
-    },
-    // args 代表客户传递请求的参数对象
-    user(parent, args, contextValue, info) {
-      // args: {id: 1}
-      return users.find((user) => user.id === args.id);
+    user: async (parent, { id }) => {
+      const user = await User.findById(id);
+      return user;
     },
   },
 };
@@ -67,7 +37,6 @@ const resolvers = {
 const app = new Koa();
 const httpServer = http.createServer(app.callback());
 
-// Set up Apollo Server
 const server = new ApolloServer({
   typeDefs,
   resolvers,

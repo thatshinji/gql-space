@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "chain": "nodemon chain.js",
+    "mongo": "nodemon mongo.js"
   },
   "keywords": [],
   "author": "",
@@ -15,8 +17,10 @@
     "@apollo/server": "^4.3.0",
     "@as-integrations/koa": "^0.2.1",
     "@koa/cors": "^4.0.0",
+    "apollo-datasource-mongodb": "^0.5.4",
     "koa": "^2.14.1",
-    "koa-bodyparser": "^4.3.0"
+    "koa-bodyparser": "^4.3.0",
+    "mongoose": "^6.8.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

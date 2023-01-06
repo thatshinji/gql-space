@@ -7,32 +7,31 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 import { koaMiddleware } from "@as-integrations/koa";
 
 const typeDefs = `#graphql
-  type Book {
-    title: String
-    author: String
+  type Library {
+    branch: String!
+    books: [Book!]
   }
 
-  type User {
-    id: ID!
-    name: String
+  type Book {
+    title: String!
+    author: Author!
+  }
+
+  type Author {
+    name: String!
   }
 
   type Query {
-    books: [Book]
-    numberSix: Int! # Should always return the number 6 when queried
-    numberSeven: Int! # Should always return 7
-    user(id: ID!): User
+    libraries: [Library]
   }
 `;
 
-const users = [
+const libraries = [
   {
-    id: "1",
-    name: "Elizabeth Bennet",
+    branch: "downtown",
   },
   {
-    id: "2",
-    name: "Fitzwilliam Darcy",
+    branch: "riverside",
   },
 ];
 
@@ -40,26 +39,43 @@ const books = [
   {
     title: "The Awakening",
     author: "Kate Chopin",
+    branch: "riverside",
   },
   {
     title: "City of Glass",
     author: "Paul Auster",
+    branch: "downtown",
   },
 ];
-// A map of functions which return data for the schema.
+
+// demo: query scehma
+// query GetBooksByLibrary {
+//   libraries {
+//     books {
+//       author {
+//         name
+//       }
+//     }
+//   }
+// }
+
 const resolvers = {
   Query: {
-    books: () => books,
-    numberSix() {
-      return 6;
+    libraries() {
+      return libraries;
     },
-    numberSeven() {
-      return 7;
+  },
+  Library: {
+    // parent 为上一步执行的结果
+    books(parent) {
+      return books.filter((book) => book.branch === parent.branch);
     },
-    // args 代表客户传递请求的参数对象
-    user(parent, args, contextValue, info) {
-      // args: {id: 1}
-      return users.find((user) => user.id === args.id);
+  },
+  Book: {
+    author(parent) {
+      return {
+        name: parent.author,
+      };
     },
   },
 };
@@ -67,7 +83,6 @@ const resolvers = {
 const app = new Koa();
 const httpServer = http.createServer(app.callback());
 
-// Set up Apollo Server
 const server = new ApolloServer({
   typeDefs,
   resolvers,
