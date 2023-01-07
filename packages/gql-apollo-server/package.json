@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js",
     "chain": "nodemon chain.js",
-    "mongo": "nodemon mongo.js"
+    "mongo": "nodemon mongo.js",
+    "dataSource": "nodemon datasources.js"
   },
   "keywords": [],
   "author": "",
