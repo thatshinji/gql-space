@@ -25,7 +25,7 @@ const typeDefs = `#graphql
 const resolvers = {
   Query: {
     users: async (parent, args, { dataSources }) => {
-      const users = await dataSources.user.getUsers();
+      const users = await dataSources.users.getUsers()
       return users;
     },
     user: async (parent, { id }, { dataSources }) => {
@@ -41,9 +41,6 @@ const httpServer = http.createServer(app.callback());
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  dataSources: () => {
-    users: new Users(User);
-  },
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 
@@ -53,7 +50,12 @@ app.use(cors());
 app.use(bodyParser());
 app.use(
   koaMiddleware(server, {
-    context: async ({ ctx }) => ({ token: ctx.headers.token }),
+    context: async ({ ctx }) => ({
+      token: ctx.headers.token,
+      dataSources:  {
+        users: new Users(User)
+      },
+    }),
   })
 );
 
