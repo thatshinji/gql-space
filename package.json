@@ -1,0 +1,28 @@
+{
+  "name": "gql-space",
+  "version": "1.0.0",
+  "description": "基于 koa + express + react + mongodb + apollo 的一系列 graphql demo 集合",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thatshinji/gql-space.git"
+  },
+  "keywords": [
+    "graphql",
+    "react",
+    "apollo-server",
+    "apollo-client",
+    "mongodb",
+    "koa",
+    "express"
+  ],
+  "author": "thatshinji",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thatshinji/gql-space/issues"
+  },
+  "homepage": "https://github.com/thatshinji/gql-space#readme"
+}
