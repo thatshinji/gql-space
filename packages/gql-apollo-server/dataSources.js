@@ -20,6 +20,19 @@ const typeDefs = `#graphql
     users: [User!]
     user(id: ID!): User
   }
+  
+  input inputUser {
+    name: String!
+    age: Int!
+  }
+
+  type AddUserResp {
+    success: Boolean!
+  }
+
+  type Mutation {
+    addUser(user: inputUser!): AddUserResp
+  }
 `;
 
 const resolvers = {
@@ -33,6 +46,18 @@ const resolvers = {
       return user;
     },
   },
+
+  Mutation: {
+    addUser: async (parent, { user: { name, age }}, { dataSources }) => {
+      const resp =  await dataSources.users.addUser({ name, age })
+      if (resp._id) {
+        return {
+          success: true
+        }
+      }
+      return { success: false }
+    }
+  }
 };
 
 const app = new Koa();

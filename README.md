@@ -15,12 +15,6 @@ clone
 git clone https://github.com/thatshinji/gql-space.git
 ```
 
-安装依赖
-
-```shell
-npx lerna@latest bootstrap
-```
-
 #### gql-react-web 配合 gql-node-server 使用
 
 ```shell
@@ -39,6 +33,3 @@ npx lerna@latest bootstrap
 
 将会自动打开浏览器 localhost:5173, 可在打开控制面板具体查看请求细节，gql-react-web 提供了基于 axios 和 swr 两种请求方式
 
-### NOTE:
-
-当 gql-node-server 中 graphql 的版本 > 15.8.0, 会在 graphiql 中出现类型报错，所暂时锁定 graphql 版本为 15.8.0
